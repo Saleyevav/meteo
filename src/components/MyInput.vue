@@ -1,7 +1,7 @@
 <template>
   <v-text-field
     v-model="message"
-    color="teal"
+    color="teal-darken-1"
     :append-icon="'mdi-send'"
     variant="filled"
     clear-icon="mdi-close-circle"
