@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export async function getWeather(city) {
-  const url = new URL(
-    "https://v1.nocodeapi.com/saleyevav/ow/OZhjtJlHCGWpWfqZ/byCityName",
-  );
+  const url = new URL("https://api.openweathermap.org/data/2.5/weather");
+
   url.searchParams.append("q", city);
+  url.searchParams.append("APPID", "e3fca08d4fee2e6246570679b947f2d8");
   url.searchParams.append("units", "metric");
   url.searchParams.append("lang", "ru");
 
@@ -12,11 +12,12 @@ export async function getWeather(city) {
     const res = await axios.get(url.href);
     console.log(res);
     const weatherData = {
+      status: 200,
       id: res.data.id,
       description: res.data.weather[0]["description"],
       icon: `https://openweathermap.org/img/wn/${res.data.weather[0]["icon"]}@4x.png`,
-      temp: Math.round(res.data.main.temp - 272.15),
-      feels_like: Math.round(res.data.main.feels_like - 272.15),
+      temp: Math.round(res.data.main.temp),
+      feels_like: Math.round(res.data.main.feels_like),
       wind: res.data.wind.speed,
       humidity: res.data.main.humidity,
     };
@@ -26,6 +27,10 @@ export async function getWeather(city) {
     if (err.response) {
       // client received an error response (5xx, 4xx)
       console.log(err.response);
+      return {
+        status: err.response.status,
+        statusText: err.response.statusText,
+      };
     } else if (err.request) {
       console.log("client never received a response, or request never left");
     } else {

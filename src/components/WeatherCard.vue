@@ -72,7 +72,7 @@
     </div>
     <div v-else>
       <v-alert prominent type="error" variant="outlined">
-        Не известный город <strong>{{ city }}</strong> попробуйте ввести другой
+        Ошибка <strong>{{ status }}:</strong> {{ statusText }}
       </v-alert>
     </div>
   </v-card>
@@ -97,12 +97,14 @@ export default {
       humidity: 0,
       feels_like: 0,
       unknownCity: false,
+      status: 200,
+      statusText: "OK",
     };
   },
   methods: {
     async setWeather() {
       const weatherData = await getWeather(this.city);
-      if (weatherData) {
+      if (weatherData.status == 200) {
         this.unknownCity = false;
         console.log(weatherData);
         this.temp = weatherData.temp;
@@ -113,7 +115,9 @@ export default {
         this.feels_like = weatherData.feels_like;
       } else {
         this.unknownCity = true;
-        console.log("Нет такого города");
+        this.status = weatherData.status;
+        this.statusText = weatherData.statusText;
+        console.log("Error " + weatherData.status);
       }
     },
   },
