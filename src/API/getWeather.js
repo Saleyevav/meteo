@@ -12,6 +12,7 @@ export async function getWeather(city) {
     const res = await axios.get(url.href);
     console.log(res);
     const weatherData = {
+      id: res.data.id,
       description: res.data.weather[0]["description"],
       icon: `https://openweathermap.org/img/wn/${res.data.weather[0]["icon"]}@4x.png`,
       temp: Math.round(res.data.main.temp - 272.15),

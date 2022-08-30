@@ -30,7 +30,7 @@
 
     <v-list-item density="compact">
       <v-list-item-avatar left>
-        <v-icon icon="mdi-weather-pouring"></v-icon>
+        <v-icon icon="mdi-water-percent"></v-icon>
       </v-list-item-avatar>
       <v-list-item-subtitle>{{ humidity }}%</v-list-item-subtitle>
     </v-list-item>

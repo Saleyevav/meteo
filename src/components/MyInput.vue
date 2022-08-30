@@ -2,15 +2,13 @@
   <v-text-field
     v-model="message"
     color="teal-darken-1"
-    :append-icon="'mdi-send'"
     variant="filled"
     clear-icon="mdi-close-circle"
     clearable
     label="Город"
-    placeholder="Москва"
     type="text"
-    @click:append="send"
     @click:clear="clear"
+    @keyup.enter="send"
   ></v-text-field>
 </template>
 <script>
