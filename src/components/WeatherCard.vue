@@ -3,42 +3,36 @@
     <v-card-item>
       <v-card-title class="text-h5">{{ city }}</v-card-title>
 
-      <v-card-subtitle>
-        <v-icon
-          icon="mdi-alert"
-          size="18"
-          color="error"
-          class="mr-1 pb-1"
-        ></v-icon>
-
-        Extreme Weather Alert
-      </v-card-subtitle>
+      <v-card-subtitle>{{ description }}</v-card-subtitle>
     </v-card-item>
 
     <v-card-text class="py-0">
       <v-row align="center" hide-gutters no-gutters>
-        <v-col class="text-h2" cols="6"> {{ temp }}&deg;C </v-col>
+        <v-col class="text-h1" cols="8"> {{ temp }}&deg;C </v-col>
 
-        <v-col cols="6" class="text-right">
-          <v-icon size="88" color="black" icon="mdi-weather-rainy"></v-icon>
+        <v-col cols="4" class="text-right">
+          <v-img :src="weatherIcon"></v-img>
         </v-col>
       </v-row>
     </v-card-text>
+    <v-list-item density="compact">
+      <v-list-item-subtitle
+        >Ощущается как {{ feels_like }}&deg;C</v-list-item-subtitle
+      >
+    </v-list-item>
 
     <v-list-item density="compact">
       <v-list-item-avatar left>
         <v-icon icon="mdi-weather-windy"></v-icon>
       </v-list-item-avatar>
-
-      <v-list-item-subtitle>123 km/h</v-list-item-subtitle>
+      <v-list-item-subtitle>{{ wind }} m/s</v-list-item-subtitle>
     </v-list-item>
 
     <v-list-item density="compact">
       <v-list-item-avatar left>
         <v-icon icon="mdi-weather-pouring"></v-icon>
       </v-list-item-avatar>
-
-      <v-list-item-subtitle>48%</v-list-item-subtitle>
+      <v-list-item-subtitle>{{ humidity }}%</v-list-item-subtitle>
     </v-list-item>
 
     <v-expand-transition>
@@ -88,16 +82,37 @@ export default {
   },
   data() {
     return {
-      temp: "0",
+      temp: 0,
+      wind: 0,
+      description: "нет данных",
+      weatherIcon: "",
+      humidity: 0,
+      feels_like: 0,
     };
   },
-  watch: {
-    city(newValue) {
-      const weatherData = getWeather(newValue);
-      console.log(weatherData);
-      //this.temp = weatherData.temp;
-      //console.log(this.temp);
+  methods: {
+    async setWeather() {
+      const weatherData = await getWeather(this.city);
+      if (weatherData) {
+        console.log(weatherData);
+        this.temp = weatherData.temp;
+        this.wind = weatherData.wind;
+        this.description = weatherData.description;
+        this.weatherIcon = weatherData.icon;
+        this.humidity = weatherData.humidity;
+        this.feels_like = weatherData.feels_like;
+      } else {
+        console.log("Нет такого города");
+      }
     },
+  },
+  watch: {
+    city() {
+      this.setWeather();
+    },
+  },
+  mounted() {
+    this.setWeather();
   },
 };
 </script>
