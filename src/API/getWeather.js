@@ -16,8 +16,14 @@ export async function getWeather(city) {
       id: res.data.id,
       description: res.data.weather[0]["description"],
       icon: `https://openweathermap.org/img/wn/${res.data.weather[0]["icon"]}@4x.png`,
-      temp: Math.round(res.data.main.temp),
-      feels_like: Math.round(res.data.main.feels_like),
+      temp:
+        Math.round(res.data.main.temp) > 0
+          ? `+${Math.round(res.data.main.temp)}`
+          : `${Math.round(res.data.main.temp)}`,
+      feels_like:
+        Math.round(res.data.main.feels_like) > 0
+          ? `+${Math.round(res.data.main.feels_like)}`
+          : `${Math.round(res.data.main.feels_like)}`,
       wind: res.data.wind.speed,
       humidity: res.data.main.humidity,
     };

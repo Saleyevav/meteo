@@ -9,9 +9,9 @@
 
       <v-card-text class="py-0">
         <v-row align="center" hide-gutters no-gutters>
-          <v-col class="text-h1" cols="8"> {{ temp }}&deg;C </v-col>
+          <v-col class="text-h2" cols="6"> {{ temp }}&deg;C </v-col>
 
-          <v-col cols="4" class="text-right">
+          <v-col cols="6" class="text-right">
             <v-img :src="weatherIcon"></v-img>
           </v-col>
         </v-row>
@@ -90,12 +90,12 @@ export default {
   },
   data() {
     return {
-      temp: 0,
+      temp: "",
+      feels_like: "",
       wind: 0,
       description: "нет данных",
       weatherIcon: "",
       humidity: 0,
-      feels_like: 0,
       unknownCity: false,
       status: 200,
       statusText: "OK",
