@@ -17,7 +17,7 @@
 
     <v-card-text class="py-0">
       <v-row align="center" hide-gutters no-gutters>
-        <v-col class="text-h2" cols="6"> 64&deg;F </v-col>
+        <v-col class="text-h2" cols="6"> {{ temp }}&deg;C </v-col>
 
         <v-col cols="6" class="text-right">
           <v-icon size="88" color="black" icon="mdi-weather-rainy"></v-icon>
@@ -77,12 +77,26 @@
   </v-card>
 </template>
 <script>
+import { getWeather } from "@/API/getWeather";
 export default {
   name: "weather-card",
   props: {
     city: {
       type: String,
       default: "Moscow",
+    },
+  },
+  data() {
+    return {
+      temp: "0",
+    };
+  },
+  watch: {
+    city(newValue) {
+      const weatherData = getWeather(newValue);
+      console.log(weatherData);
+      //this.temp = weatherData.temp;
+      //console.log(this.temp);
     },
   },
 };

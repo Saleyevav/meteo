@@ -24,7 +24,6 @@
 <script>
 import WeatherCard from "@/components/WeatherCard.vue";
 import MyInput from "@/components/MyInput.vue";
-import { ref } from "vue";
 export default {
   components: {
     WeatherCard,
@@ -38,7 +37,6 @@ export default {
   methods: {
     changeCity(city) {
       this.city = city;
-      alert(city);
     },
   },
 };
