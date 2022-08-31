@@ -14,6 +14,7 @@ export async function getWeather(city) {
     const weatherData = {
       status: 200,
       id: res.data.id,
+      country: res.data.sys.country,
       description: res.data.weather[0]["description"],
       icon: `https://openweathermap.org/img/wn/${res.data.weather[0]["icon"]}@4x.png`,
       temp:

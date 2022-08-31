@@ -1,8 +1,8 @@
 <template>
   <v-card class="mx-auto" max-width="368">
-    <div v-if="!unknownCity">
+    <div v-if="status == 200">
       <v-card-item>
-        <v-card-title class="text-h5">{{ city }}</v-card-title>
+        <v-card-title class="text-h5">{{ city }} {{ country }}</v-card-title>
 
         <v-card-subtitle>{{ description }}</v-card-subtitle>
       </v-card-item>
@@ -70,6 +70,12 @@
         <v-btn @click="expand = !expand"> В избранное </v-btn>
       </v-card-actions>
     </div>
+    <div v-else-if="status == 404">
+      <v-alert prominent type="error" variant="outlined">
+        Не известный город <strong>{{ city }}</strong
+        >, попробуйте другой.
+      </v-alert>
+    </div>
     <div v-else>
       <v-alert prominent type="error" variant="outlined">
         Ошибка <strong>{{ status }}:</strong> {{ statusText }}
@@ -90,13 +96,13 @@ export default {
   },
   data() {
     return {
+      country: "",
       temp: "",
       feels_like: "",
       wind: 0,
       description: "нет данных",
       weatherIcon: "",
       humidity: 0,
-      unknownCity: false,
       status: 200,
       statusText: "OK",
     };
@@ -104,9 +110,10 @@ export default {
   methods: {
     async setWeather() {
       const weatherData = await getWeather(this.city);
+      this.status = weatherData.status;
       if (weatherData.status == 200) {
-        this.unknownCity = false;
         console.log(weatherData);
+        this.country = weatherData.country;
         this.temp = weatherData.temp;
         this.wind = weatherData.wind;
         this.description = weatherData.description;
@@ -114,8 +121,6 @@ export default {
         this.humidity = weatherData.humidity;
         this.feels_like = weatherData.feels_like;
       } else {
-        this.unknownCity = true;
-        this.status = weatherData.status;
         this.statusText = weatherData.statusText;
         console.log("Error " + weatherData.status);
       }
