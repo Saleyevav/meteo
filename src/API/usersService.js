@@ -23,13 +23,16 @@ export function getUsers() {
 
 export function getUser(name) {
   const users = JSON.parse(localStorage.users);
-  const user = {
-    name: name,
-    password: users[name].password,
-    isAdmin: users[name].isAdmin,
-    cityes: users[name].cityes,
-  };
-  return user;
+  if (users[name]) {
+    const user = {
+      name: name,
+      password: users[name].password,
+      isAdmin: users[name].isAdmin,
+      cityes: users[name].cityes,
+    };
+    return user;
+  }
+  return null;
 }
 
 export function addUser(name, password) {
