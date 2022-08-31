@@ -112,7 +112,6 @@ export default {
       const weatherData = await getWeather(this.city);
       this.status = weatherData.status;
       if (weatherData.status == 200) {
-        console.log(weatherData);
         this.country = weatherData.country;
         this.temp = weatherData.temp;
         this.wind = weatherData.wind;
@@ -122,7 +121,6 @@ export default {
         this.feels_like = weatherData.feels_like;
       } else {
         this.statusText = weatherData.statusText;
-        console.log("Error " + weatherData.status);
       }
     },
   },

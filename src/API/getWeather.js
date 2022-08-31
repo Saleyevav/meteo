@@ -10,7 +10,6 @@ export async function getWeather(city) {
 
   try {
     const res = await axios.get(url.href);
-    console.log(res);
     const weatherData = {
       status: 200,
       id: res.data.id,
@@ -33,7 +32,6 @@ export async function getWeather(city) {
   } catch (err) {
     if (err.response) {
       // client received an error response (5xx, 4xx)
-      console.log(err.response);
       return {
         status: err.response.status,
         statusText: err.response.statusText,
