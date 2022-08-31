@@ -12,11 +12,18 @@
     <v-app-bar-title class="text-h4">METEO</v-app-bar-title>
 
     <v-spacer></v-spacer>
-    <v-btn> Logout </v-btn>
+    <v-btn @click="logout"> Logout </v-btn>
     <v-btn class="ml-3"> Users </v-btn>
   </v-app-bar>
 </template>
 <script>
-export default {};
+export default {
+  methods: {
+    logout() {
+      this.$store.commit("logout");
+      this.$router.push("/login");
+    },
+  },
+};
 </script>
 <style></style>

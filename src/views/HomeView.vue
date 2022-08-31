@@ -24,6 +24,7 @@
 <script>
 import WeatherCard from "@/components/WeatherCard.vue";
 import MyInput from "@/components/MyInput.vue";
+
 export default {
   components: {
     WeatherCard,
@@ -38,6 +39,11 @@ export default {
     changeCity(city) {
       this.city = city;
     },
+  },
+  mounted() {
+    if (!this.$store.state.isLogin) {
+      this.$router.push("/login");
+    }
   },
 };
 </script>

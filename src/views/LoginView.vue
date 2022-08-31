@@ -29,7 +29,7 @@
 </template>
 <script>
 import { usersService } from "@/API/usersService";
-import router from "@/router";
+
 export default {
   data() {
     return {
@@ -45,7 +45,8 @@ export default {
         if (user) {
           if (user.name == this.name && user.password == this.password) {
             //Успешная авторизация
-            router.push("/");
+            this.$store.commit("login");
+            this.$router.push("/");
           } else {
             this.showAlert = true;
           }
