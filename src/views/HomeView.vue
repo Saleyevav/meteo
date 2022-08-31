@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-container fluid>
+    <v-container>
       <v-row dense>
         <v-col cols="6">
           <my-input @changeCity="changeCity"></my-input>
@@ -8,7 +8,7 @@
         </v-col>
         <v-col cols="6">
           <v-row dense>
-            <v-col v-for="n in 30" :key="n" cols="12">
+            <v-col v-for="n in 3" :key="n" cols="12">
               <v-card
                 :title="`Москва`"
                 :subtitle="`Столица`"
