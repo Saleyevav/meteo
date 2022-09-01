@@ -10,6 +10,11 @@
   </v-row>
 </template>
 <script>
-export default {};
+import WeatherCard from "@/components/WeatherCard.vue";
+export default {
+  components: {
+    WeatherCard,
+  },
+};
 </script>
 <style></style>

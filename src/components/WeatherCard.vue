@@ -91,12 +91,6 @@ import MyInput from "@/components/MyInput.vue";
 export default {
   components: { MyInput },
   name: "weather-card",
-  props: {
-    city: {
-      type: String,
-      default: "Moscow",
-    },
-  },
   data() {
     return {
       city: "Москва",

@@ -3,7 +3,7 @@
     <v-container>
       <v-row dense>
         <v-col cols="6">
-          <weather-card :city="city" />
+          <weather-card />
         </v-col>
         <v-col cols="6">
           <weather-list />
@@ -21,9 +21,7 @@ export default {
     WeatherList,
   },
   data() {
-    return {
-      city: "Москва",
-    };
+    return {};
   },
 
   beforeMount() {
