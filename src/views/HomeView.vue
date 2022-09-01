@@ -40,7 +40,8 @@ export default {
       this.city = city;
     },
   },
-  mounted() {
+
+  beforeMount() {
     if (!this.$store.state.isLogin) {
       this.$router.push("/login");
     }

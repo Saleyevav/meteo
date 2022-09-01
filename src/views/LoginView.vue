@@ -47,6 +47,9 @@ export default {
             //Успешная авторизация
             this.$store.commit("login");
             this.$router.push("/");
+            if (user.isAdmin) {
+              this.$store.commit("setIsAdminTrue");
+            }
           } else {
             this.showAlert = true;
           }

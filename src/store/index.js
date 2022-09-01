@@ -13,9 +13,12 @@ export default createStore({
     logout() {
       this.state.isLogin = false;
     },
-    toggleIsAdmin() {
-      this.state.isAdmin = !state.isAdmin;
+    setIsAdminTrue() {
+      this.state.isAdmin = true;
     },
+    setIsAdminFalse(){
+      this.state.isAdmin = false;
+    }
   },
   actions: {},
   modules: {},
