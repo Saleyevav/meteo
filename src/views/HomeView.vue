@@ -3,7 +3,7 @@
     <v-container>
       <v-row dense>
         <v-col cols="6">
-          <my-input @changeCity="changeCity"></my-input>
+          <!-- <my-input @changeCity="changeCity"></my-input> -->
           <weather-card :city="city" />
         </v-col>
         <v-col cols="6">
@@ -23,22 +23,15 @@
 </template>
 <script>
 import WeatherCard from "@/components/WeatherCard.vue";
-import MyInput from "@/components/MyInput.vue";
 
 export default {
   components: {
     WeatherCard,
-    MyInput,
   },
   data() {
     return {
       city: "Москва",
     };
-  },
-  methods: {
-    changeCity(city) {
-      this.city = city;
-    },
   },
 
   beforeMount() {
