@@ -3,19 +3,10 @@
     <v-container>
       <v-row dense>
         <v-col cols="6">
-          <!-- <my-input @changeCity="changeCity"></my-input> -->
           <weather-card :city="city" />
         </v-col>
         <v-col cols="6">
-          <v-row dense>
-            <v-col v-for="n in 3" :key="n" cols="12">
-              <v-card
-                :title="`Москва`"
-                :subtitle="`Столица`"
-                text="Температура"
-              ></v-card>
-            </v-col>
-          </v-row>
+          <weather-list />
         </v-col>
       </v-row>
     </v-container>
@@ -23,10 +14,11 @@
 </template>
 <script>
 import WeatherCard from "@/components/WeatherCard.vue";
-
+import WeatherList from "@/components/WeatherList.vue";
 export default {
   components: {
     WeatherCard,
+    WeatherList,
   },
   data() {
     return {
