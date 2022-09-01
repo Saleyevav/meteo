@@ -1,4 +1,5 @@
 <template>
+  <my-input @changeCity="changeCity"></my-input>
   <v-card class="mx-auto" max-width="368">
     <div v-if="status == 200">
       <v-card-item>
@@ -67,7 +68,7 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn @click="expand = !expand"> В избранное </v-btn>
+        <v-btn @click=""> В избранное </v-btn>
       </v-card-actions>
     </div>
     <div v-else-if="status == 404">
@@ -86,7 +87,9 @@
 
 <script>
 import { getWeather } from "@/API/getWeather";
+import MyInput from "@/components/MyInput.vue";
 export default {
+  components: { MyInput },
   name: "weather-card",
   props: {
     city: {
@@ -96,6 +99,7 @@ export default {
   },
   data() {
     return {
+      city: "Москва",
       country: "",
       temp: "",
       feels_like: "",
@@ -108,6 +112,9 @@ export default {
     };
   },
   methods: {
+    changeCity(city) {
+      this.city = city;
+    },
     async setWeather() {
       const weatherData = await getWeather(this.city);
       this.status = weatherData.status;
