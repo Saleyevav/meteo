@@ -9,7 +9,7 @@
       ></v-img>
     </template>
 
-    <v-app-bar-title class="text-h4">METEO</v-app-bar-title>
+    <v-app-bar-title class="text-h4 d-none d-md-flex">METEO</v-app-bar-title>
 
     <v-spacer></v-spacer>
     <v-btn @click="$router.push('/')"> На главную </v-btn>

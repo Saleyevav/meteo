@@ -3,33 +3,17 @@
     <div v-if="status == 200">
       <v-card-text class="py-0">
         <v-row align="center" hide-gutters no-gutters>
-          <v-col class="text-h5" cols="4">{{ city }} {{ country }}</v-col>
+          <v-col class="text-h5" cols="5">{{ city }} {{ country }}</v-col>
           <v-spacer></v-spacer>
-          <v-col class="text-h6" cols="3">{{ description }}</v-col>
-          <v-col class="text-h6" cols="2"> {{ temp }}&deg;C </v-col>
-          <v-col cols="2">
+          <v-col class="text-subtitle-1" cols="4">{{ description }}</v-col>
+          <v-col class="text-subtitle-1" cols="2"> {{ temp }}&deg;C </v-col>
+          <v-col cols="1">
             <v-img :src="weatherIcon" max-width="50" class="ml-auto"></v-img>
           </v-col>
         </v-row>
       </v-card-text>
 
       <v-divider></v-divider>
-
-      <v-row align="center" class="mt-4" hide-gutters no-gutters>
-        <v-col cols="6">
-          <my-input
-            density="compact"
-            label="Изменить город"
-            @changeCity="changeCity"
-          ></my-input>
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-col cols="2">
-          <v-card-actions>
-            <v-btn @click="" class="mb-4"> Удалить </v-btn>
-          </v-card-actions>
-        </v-col>
-      </v-row>
     </div>
 
     <div v-else-if="status == 404">
@@ -44,6 +28,23 @@
         Ошибка <strong>{{ status }}:</strong> {{ statusText }}
       </v-alert>
     </div>
+
+    <v-row align="center" class="mt-4" hide-gutters no-gutters>
+      <v-col cols="6">
+        <my-input
+          class="ml-4"
+          density="compact"
+          label="Изменить город"
+          @changeCity="changeCity"
+        ></my-input>
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col cols="3">
+        <v-card-actions>
+          <v-btn @click="" class="mb-4 ml-auto"> Удалить </v-btn>
+        </v-card-actions>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
@@ -54,13 +55,14 @@ export default {
   components: { MyInput },
   name: "weather-card-lite",
   props: {
-    city: {
+    cityName: {
       type: String,
       default: "Киржач",
     },
   },
   data() {
     return {
+      city: this.cityName,
       id: "",
       country: "",
       temp: "",
@@ -71,8 +73,8 @@ export default {
     };
   },
   methods: {
-    changeCity(city) {
-      this.city = city;
+    changeCity(newCity) {
+      this.city = newCity;
     },
     async setWeather() {
       const weatherData = await getWeather(this.city);
