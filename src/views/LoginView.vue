@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-sheet class="d-flex justify-center pt-10">
+    <v-sheet class="d-flex justify-center pt-10" @keyup.enter="login">
       <v-sheet elevation="18" width="368" class="pa-4">
         <v-alert prominent type="error" variant="outlined" v-if="showAlert">
           Неверное имя или пароль
