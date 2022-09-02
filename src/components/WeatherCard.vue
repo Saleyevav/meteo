@@ -1,9 +1,9 @@
 <template>
-  <my-input @changeCity="changeCity"></my-input>
+  <my-input variant="solo" @changeCity="changeCity"></my-input>
   <v-card class="mx-auto" max-width="368">
     <div v-if="status == 200">
       <v-card-item>
-        <v-card-title class="text-h5">{{ city }} {{ country }}</v-card-title>
+        <v-card-title class="text-h4">{{ city }} {{ country }}</v-card-title>
 
         <v-card-subtitle>{{ description }}</v-card-subtitle>
       </v-card-item>

@@ -1,28 +1,35 @@
 <template>
-  <my-input @changeCity="changeCity"></my-input>
   <v-card>
     <div v-if="status == 200">
-      <v-card-item>
-        <v-card-title class="text-h5">{{ city }} {{ country }}</v-card-title>
-
-        <v-card-subtitle>{{ description }}</v-card-subtitle>
-      </v-card-item>
-
       <v-card-text class="py-0">
         <v-row align="center" hide-gutters no-gutters>
-          <v-col class="text-h2" cols="6"> {{ temp }}&deg;C </v-col>
-
-          <v-col cols="6" class="text-right">
-            <v-img :src="weatherIcon"></v-img>
+          <v-col class="text-h5" cols="4">{{ city }} {{ country }}</v-col>
+          <v-spacer></v-spacer>
+          <v-col class="text-h6" cols="3">{{ description }}</v-col>
+          <v-col class="text-h6" cols="2"> {{ temp }}&deg;C </v-col>
+          <v-col cols="2">
+            <v-img :src="weatherIcon" max-width="50" class="ml-auto"></v-img>
           </v-col>
         </v-row>
       </v-card-text>
 
       <v-divider></v-divider>
 
-      <v-card-actions>
-        <v-btn @click=""> В избранное </v-btn>
-      </v-card-actions>
+      <v-row align="center" class="mt-4" hide-gutters no-gutters>
+        <v-col cols="6">
+          <my-input
+            density="compact"
+            label="Изменить город"
+            @changeCity="changeCity"
+          ></my-input>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col cols="2">
+          <v-card-actions>
+            <v-btn @click="" class="mb-4"> Удалить </v-btn>
+          </v-card-actions>
+        </v-col>
+      </v-row>
     </div>
 
     <div v-else-if="status == 404">
@@ -46,9 +53,14 @@ import MyInput from "@/components/MyInput.vue";
 export default {
   components: { MyInput },
   name: "weather-card-lite",
+  props: {
+    city: {
+      type: String,
+      default: "Киржач",
+    },
+  },
   data() {
     return {
-      city: "Москва",
       id: "",
       country: "",
       temp: "",
