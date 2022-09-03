@@ -4,13 +4,13 @@ export function init() {
   users["admin"] = {
     password: "admin",
     isAdmin: true,
-    cityes: [{name:"Воркута", id:1486910}, {name:"Ашхабад", id:162183}],
+    cityList: [{name:"Воркута", id:1486910}, {name:"Ашхабад", id:162183}],
   };
 
   users["Василий"] = {
     password: "",
     isAdmin: false,
-    cityes: [{name:"Муром", id:524294}, {name:"Вашингтон", id:5815135}],
+    cityList: [{name:"Муром", id:524294}, {name:"Вашингтон", id:5815135}],
   };
 
   localStorage.setItem("users", JSON.stringify(users));
@@ -21,14 +21,14 @@ export function getUsers() {
   return users;
 }
 
-export function getUser(name) {
+export function getUserData(name) {
   const users = JSON.parse(localStorage.users);
   if (users[name]) {
     const user = {
       name: name,
       password: users[name].password,
       isAdmin: users[name].isAdmin,
-      cityes: users[name].cityes,
+      cityList: users[name].cityList,
     };
     return user;
   }
@@ -37,7 +37,7 @@ export function getUser(name) {
 
 export function addUser(name, password) {
   const users = JSON.parse(localStorage.users);
-  users[name] = { password: password, cities: [] };
+  users[name] = { password: password, cityList: [] };
   localStorage.setItem("users", JSON.stringify(users));
 }
 

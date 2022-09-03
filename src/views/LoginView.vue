@@ -29,7 +29,6 @@
 </template>
 <script>
 import { usersService } from "@/API/usersService";
-
 export default {
   data() {
     return {
@@ -41,7 +40,7 @@ export default {
   methods: {
     login() {
       if (this.name) {
-        const user = usersService.getUser(this.name);
+        const user = usersService.getUserData(this.name);
         if (user) {
           if (user.name == this.name && user.password == this.password) {
             //Успешная авторизация

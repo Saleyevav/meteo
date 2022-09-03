@@ -15,19 +15,26 @@
 <script>
 import WeatherCard from "@/components/WeatherCard.vue";
 import WeatherList from "@/components/WeatherList.vue";
+import { usersService } from "@/API/usersService";
 export default {
   components: {
     WeatherCard,
     WeatherList,
   },
   data() {
-    return {};
+    return {
+      cityList: [],
+    };
+  },
+  methods: {
+    getCityList() {
+      const userData = usersService.getUserData(this.$store.state.userName);
+      this.cityList = userData.cityList;
+    },
   },
 
-  beforeMount() {
-    if (!this.$store.state.isLogin) {
-      this.$router.push("/login");
-    }
+  mounted() {
+    this.getCityList();
   },
 };
 </script>
