@@ -13,7 +13,9 @@
 
     <v-spacer></v-spacer>
     <v-btn @click="$router.push('/')"> На главную </v-btn>
-    <v-btn @click="$router.push('/users')"> Пользователи </v-btn>
+    <v-btn @click="$router.push('/users')" v-if="$store.state.isAdmin">
+      Пользователи
+    </v-btn>
     <v-btn class="ml-3" @click="logout"> Выйти </v-btn>
   </v-app-bar>
 </template>

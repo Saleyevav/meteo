@@ -28,6 +28,8 @@ export async function getWeather(city) {
       humidity: res.data.main.humidity,
     };
 
+    console.log(weatherData)
+
     return weatherData;
   } catch (err) {
     if (err.response) {

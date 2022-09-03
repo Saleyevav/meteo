@@ -4,13 +4,13 @@ export function init() {
   users["admin"] = {
     password: "admin",
     isAdmin: true,
-    cityes: ["Москва", "Ашхабад"],
+    cityes: [{name:"Воркута", id:1486910}, {name:"Ашхабад", id:162183}],
   };
 
   users["Василий"] = {
     password: "",
     isAdmin: false,
-    cityes: ["Москва", "Ашхабад"],
+    cityes: [{name:"Муром", id:524294}, {name:"Вашингтон", id:5815135}],
   };
 
   localStorage.setItem("users", JSON.stringify(users));
