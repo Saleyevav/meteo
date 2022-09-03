@@ -4,20 +4,23 @@ export default createStore({
   state: {
     isLogin: false,
     isAdmin: false,
+    userName: ''
   },
   getters: {},
   mutations: {
-    login() {
-      this.state.isLogin = true;
+    login(state,userName) {
+      state.isLogin = true;
+      state.userName = userName;
     },
-    logout() {
-      this.state.isLogin = false;
+    logout(state) {
+      state.isLogin = false;
+      state.userName = '';
     },
-    setIsAdminTrue() {
-      this.state.isAdmin = true;
+    setIsAdminTrue(state) {
+      state.isAdmin = true;
     },
-    setIsAdminFalse(){
-      this.state.isAdmin = false;
+    setIsAdminFalse(state){
+      state.isAdmin = false;
     }
   },
   actions: {},

@@ -45,7 +45,7 @@ export default {
         if (user) {
           if (user.name == this.name && user.password == this.password) {
             //Успешная авторизация
-            this.$store.commit("login");
+            this.$store.commit("login", user.name);
             this.$router.push("/");
             if (user.isAdmin) {
               this.$store.commit("setIsAdminTrue");

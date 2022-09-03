@@ -6,7 +6,6 @@
   </v-row>
 </template>
 <script>
-import WeatherCard from "@/components/WeatherCard.vue";
 import WeatherCardLite from "@/components/WeatherCardLite.vue";
 export default {
   components: {
