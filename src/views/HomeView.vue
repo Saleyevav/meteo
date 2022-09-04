@@ -6,7 +6,11 @@
           <weather-card @addCityToFavorites="addCityToFavorites" />
         </v-col>
         <v-col cols="12" md="6">
-          <weather-list :cityList="cityList" />
+          <weather-list
+            :cityList="cityList"
+            @deleteCity="deleteCity"
+            @changeCity="changeCity"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -27,10 +31,39 @@ export default {
     };
   },
   methods: {
-    addCityToFavorites(city) {
-      usersService.addCity(this.$store.state.userName, city);
-      this.getCityList();
+    contains(arr, elem) {
+      return arr.find((i) => i.id === elem.id);
     },
+
+    deleteCity(city) {
+      this.cityList = this.cityList.filter((c) => {
+        return c.id !== city.id;
+      });
+      usersService.setCityList(this.$store.state.userName, this.cityList);
+    },
+
+    changeCity(city, newCity) {
+      console.log(city, newCity);
+      if (this.contains(this.cityList, newCity)) {
+        //Исправить!!! city, newCity не объекты!!
+        // this.cityList.push(city);
+        // usersService.setCityList(this.$store.state.userName, this.cityList);
+        // this.getCityList();
+      } else {
+        alert(newCity.name + "уже в избранном!");
+      }
+    },
+
+    addCityToFavorites(city) {
+      if (!this.contains(this.cityList, city)) {
+        this.cityList.push(city);
+        usersService.setCityList(this.$store.state.userName, this.cityList);
+        this.getCityList();
+      } else {
+        alert(city.name + "уже в избранном!");
+      }
+    },
+
     getCityList() {
       const userData = usersService.getUserData(this.$store.state.userName);
       this.cityList = userData.cityList;

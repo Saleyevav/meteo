@@ -41,10 +41,9 @@ export function addUser(name, password) {
   localStorage.setItem("users", JSON.stringify(users));
 }
 
-export function addCity(name, city){
-  console.log('name: ' +name+ ' addCity: '+ city );
+export function setCityList(name, cityList){
   const users = JSON.parse(localStorage.users);
-  users[name].cityList.push(city);
+  users[name].cityList = cityList;
   localStorage.setItem("users", JSON.stringify(users));
 }
 

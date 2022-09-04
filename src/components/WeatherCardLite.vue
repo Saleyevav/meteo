@@ -41,7 +41,7 @@
       <v-spacer></v-spacer>
       <v-col cols="3">
         <v-card-actions>
-          <v-btn @click="" class="mb-4 ml-auto"> Удалить </v-btn>
+          <v-btn @click="deleteCity" class="mb-4 ml-auto"> Удалить </v-btn>
         </v-card-actions>
       </v-col>
     </v-row>
@@ -54,6 +54,7 @@ import MyInput from "@/components/MyInput.vue";
 export default {
   components: { MyInput },
   name: "weather-card-lite",
+  emits: ["deleteCity", "changeCity"],
   props: {
     cityName: {
       type: String,
@@ -73,7 +74,11 @@ export default {
     };
   },
   methods: {
+    deleteCity() {
+      this.$emit("deleteCity", { name: this.city, id: this.id });
+    },
     changeCity(newCity) {
+      this.$emit("changeCity", this.city, newCity);
       this.city = newCity;
     },
     async setWeather() {
@@ -90,6 +95,7 @@ export default {
       }
     },
   },
+
   watch: {
     city() {
       this.setWeather();
