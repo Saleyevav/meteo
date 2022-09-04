@@ -29,6 +29,7 @@ export default {
   methods: {
     addCityToFavorites(city) {
       usersService.addCity(this.$store.state.userName, city);
+      this.getCityList();
     },
     getCityList() {
       const userData = usersService.getUserData(this.$store.state.userName);

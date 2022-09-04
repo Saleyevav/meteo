@@ -43,6 +43,9 @@ export function addUser(name, password) {
 
 export function addCity(name, city){
   console.log('name: ' +name+ ' addCity: '+ city );
+  const users = JSON.parse(localStorage.users);
+  users[name].cityList.push(city);
+  localStorage.setItem("users", JSON.stringify(users));
 }
 
 export function changeAccess(name, isAdmin) {

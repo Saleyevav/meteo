@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     addCityToFavorites() {
-      this.$emit("addCityToFavorites", this.city);
+      this.$emit("addCityToFavorites", { name: this.city, id: this.id });
     },
     changeCity(city) {
       this.city = city;
