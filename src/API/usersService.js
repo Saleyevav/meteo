@@ -41,6 +41,10 @@ export function addUser(name, password) {
   localStorage.setItem("users", JSON.stringify(users));
 }
 
+export function addCity(name, city){
+  console.log('name: ' +name+ ' addCity: '+ city );
+}
+
 export function changeAccess(name, isAdmin) {
   const users = JSON.parse(localStorage.users);
   users[name] = { isAdmin: isAdmin };

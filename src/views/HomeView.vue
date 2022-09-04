@@ -3,7 +3,7 @@
     <v-container>
       <v-row dense>
         <v-col cols="12" md="6">
-          <weather-card />
+          <weather-card @addCityToFavorites="addCityToFavorites" />
         </v-col>
         <v-col cols="12" md="6">
           <weather-list :cityList="cityList" />
@@ -27,6 +27,9 @@ export default {
     };
   },
   methods: {
+    addCityToFavorites(city) {
+      usersService.addCity(this.$store.state.userName, city);
+    },
     getCityList() {
       const userData = usersService.getUserData(this.$store.state.userName);
       this.cityList = userData.cityList;

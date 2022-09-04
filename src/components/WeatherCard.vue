@@ -40,7 +40,7 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn @click=""> В избранное </v-btn>
+        <v-btn @click="addCityToFavorites"> В избранное </v-btn>
       </v-card-actions>
     </div>
     <div v-else-if="status == 404">
@@ -79,6 +79,9 @@ export default {
     };
   },
   methods: {
+    addCityToFavorites() {
+      this.$emit("addCityToFavorites", this.city);
+    },
     changeCity(city) {
       this.city = city;
     },
