@@ -7,7 +7,7 @@ export function init() {
     cityList: [{name:"Воркута", id:1486910}, {name:"Ашхабад", id:162183}],
   };
 
-  users["Василий"] = {
+  users["user"] = {
     password: "",
     isAdmin: false,
     cityList: [{name:"Муром", id:524294}, {name:"Вашингтон", id:5815135}],

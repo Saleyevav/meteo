@@ -6,7 +6,7 @@
           <weather-card />
         </v-col>
         <v-col cols="12" md="6">
-          <weather-list />
+          <weather-list :cityList="cityList" />
         </v-col>
       </v-row>
     </v-container>
