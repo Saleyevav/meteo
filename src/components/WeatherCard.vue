@@ -63,6 +63,7 @@ import MyInput from "@/components/MyInput.vue";
 export default {
   components: { MyInput },
   name: "weather-card",
+  emits: ["addCityToFavorites"],
   data() {
     return {
       city: "Москва",
