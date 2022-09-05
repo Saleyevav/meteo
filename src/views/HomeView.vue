@@ -43,14 +43,11 @@ export default {
     },
 
     changeCity(city, newCity) {
-      console.log(city, newCity);
-      if (this.contains(this.cityList, newCity)) {
-        //Исправить!!! city, newCity не объекты!!
-        // this.cityList.push(city);
-        // usersService.setCityList(this.$store.state.userName, this.cityList);
-        // this.getCityList();
+      if (!this.contains(this.cityList, newCity)) {
+        this.deleteCity(city);
+        this.addCityToFavorites(newCity);
       } else {
-        alert(newCity.name + "уже в избранном!");
+        alert(newCity.name + " уже в избранном!");
       }
     },
 
@@ -60,7 +57,7 @@ export default {
         usersService.setCityList(this.$store.state.userName, this.cityList);
         this.getCityList();
       } else {
-        alert(city.name + "уже в избранном!");
+        alert(city.name + " уже в избранном!");
       }
     },
 

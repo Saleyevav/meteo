@@ -23,7 +23,7 @@ export default {
       this.message = "";
     },
     send() {
-      this.$emit("changeCity", this.message);
+      this.$emit("changeCity", this.message.trim());
       this.clear();
     },
   },

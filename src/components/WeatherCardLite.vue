@@ -18,8 +18,7 @@
 
     <div v-else-if="status == 404">
       <v-alert prominent type="error" variant="outlined">
-        Не известный город <strong>{{ city }}</strong
-        >, попробуйте другой.
+        Не известный город, попробуйте другой.
       </v-alert>
     </div>
 
@@ -77,9 +76,18 @@ export default {
     deleteCity() {
       this.$emit("deleteCity", { name: this.city, id: this.id });
     },
-    changeCity(newCity) {
-      this.$emit("changeCity", this.city, newCity);
-      this.city = newCity;
+    async changeCity(newCityName) {
+      const weatherData = await getWeather(newCityName);
+      this.status = weatherData.status;
+      if (weatherData.status == 200) {
+        this.$emit(
+          "changeCity",
+          { name: this.city, id: this.id },
+          { name: newCityName, id: weatherData.id },
+        );
+      } else {
+        this.statusText = weatherData.statusText;
+      }
     },
     async setWeather() {
       const weatherData = await getWeather(this.city);
@@ -97,8 +105,8 @@ export default {
   },
 
   watch: {
-    city() {
-      this.setWeather();
+    async city() {
+      await this.setWeather();
     },
   },
   mounted() {
