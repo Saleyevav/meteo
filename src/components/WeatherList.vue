@@ -3,6 +3,7 @@
     <v-col v-for="city in cityList" :key="city.id" cols="12">
       <weather-card-lite
         :cityName="city.name"
+        :timer="timer"
         @deleteCity="deleteCity"
         @changeCity="changeCity"
       />
@@ -18,6 +19,10 @@ export default {
     cityList: {
       type: Array,
       default: [],
+    },
+    timer: {
+      interval: Number,
+      default: 0,
     },
   },
   components: {

@@ -25,7 +25,7 @@ export default {
   },
   watch: {
     slider() {
-      this.$emit("changeSlider", this.slider);
+      this.$emit("changeSlider", Math.round(this.slider));
     },
   },
 };

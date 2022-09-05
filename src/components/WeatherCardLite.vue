@@ -1,33 +1,37 @@
 <template>
   <v-card>
-    <div v-if="status == 200">
-      <v-card-text class="py-0">
-        <v-row align="center" hide-gutters no-gutters>
-          <v-col class="text-h5" cols="5">{{ city }} {{ country }}</v-col>
-          <v-spacer></v-spacer>
-          <v-col class="text-subtitle-1" cols="4">{{ description }}</v-col>
-          <v-col class="text-subtitle-1" cols="2"> {{ temp }}&deg;C </v-col>
-          <v-col cols="1">
-            <v-img :src="weatherIcon" max-width="50" class="ml-auto"></v-img>
-          </v-col>
-        </v-row>
-      </v-card-text>
+    <div v-if="isLoading">
+      <div v-if="status == 200">
+        <v-card-text class="py-0">
+          <v-row align="center" hide-gutters no-gutters>
+            <v-col class="text-h5" cols="5">{{ city }} {{ country }}</v-col>
+            <v-spacer></v-spacer>
+            <v-col class="text-subtitle-1" cols="4">{{ description }}</v-col>
+            <v-col class="text-subtitle-1" cols="2"> {{ temp }}&deg;C </v-col>
+            <v-col cols="1">
+              <v-img :src="weatherIcon" max-width="50" class="ml-auto"></v-img>
+            </v-col>
+          </v-row>
+        </v-card-text>
 
-      <v-divider></v-divider>
+        <v-divider></v-divider>
+      </div>
+
+      <div v-else-if="status == 404">
+        <v-alert prominent type="error" variant="outlined">
+          Не известный город, попробуйте другой.
+        </v-alert>
+      </div>
+
+      <div v-else>
+        <v-alert prominent type="error" variant="outlined">
+          Ошибка <strong>{{ status }}:</strong> {{ statusText }}
+        </v-alert>
+      </div>
     </div>
-
-    <div v-else-if="status == 404">
-      <v-alert prominent type="error" variant="outlined">
-        Не известный город, попробуйте другой.
-      </v-alert>
-    </div>
-
     <div v-else>
-      <v-alert prominent type="error" variant="outlined">
-        Ошибка <strong>{{ status }}:</strong> {{ statusText }}
-      </v-alert>
+      <v-progress-circular indeterminate color="teal"></v-progress-circular>
     </div>
-
     <v-row align="center" class="mt-4" hide-gutters no-gutters>
       <v-col cols="6">
         <my-input
@@ -59,6 +63,10 @@ export default {
       type: String,
       default: "Киржач",
     },
+    timer: {
+      interval: Number,
+      default: 0,
+    },
   },
   data() {
     return {
@@ -70,6 +78,8 @@ export default {
       weatherIcon: "",
       status: 200,
       statusText: "OK",
+      timerId: 0,
+      isLoading: false,
     };
   },
   methods: {
@@ -90,7 +100,9 @@ export default {
       }
     },
     async setWeather() {
+      this.isLoading = false;
       const weatherData = await getWeather(this.city);
+      this.isLoading = true;
       this.status = weatherData.status;
       if (weatherData.status == 200) {
         this.id = weatherData.id;
@@ -102,11 +114,22 @@ export default {
         this.statusText = weatherData.statusText;
       }
     },
+    async setTimer(interval) {
+      clearInterval(this.timerId);
+      if (interval) {
+        this.timerId = await setInterval(() => {
+          this.setWeather();
+        }, interval * 1000 * 60);
+      }
+    },
   },
 
   watch: {
     async city() {
       await this.setWeather();
+    },
+    timer(value) {
+      this.setTimer(value);
     },
   },
   mounted() {

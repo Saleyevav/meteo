@@ -12,6 +12,7 @@
         <v-col cols="12" md="6">
           <weather-list
             :cityList="cityList"
+            :timer="timer"
             @deleteCity="deleteCity"
             @changeCity="changeCity"
           />
