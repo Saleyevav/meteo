@@ -1,16 +1,37 @@
 <template>
-  <v-main><div>Users</div></v-main>
+  <v-main>
+    <v-row dense>
+      <v-col v-for="user in Object.keys(users)" :key="user" cols="12">
+        <user-card
+          :user="user"
+          :password="users[user].password"
+          :isAdmin="users[user].isAdmin"
+        />
+      </v-col>
+    </v-row>
+  </v-main>
 </template>
 <script>
+import UserCard from "@/components/UserCard.vue";
+import { usersService } from "@/API/usersService";
 export default {
-  // beforeMount() {
-  //   if (!this.$store.state.isLogin) {
-  //     this.$router.push("/login");
-  //   }
-  //   if (!this.$store.state.isAdmin) {
-  //     this.$router.push("/");
-  //   }
-  // },
+  components: {
+    UserCard,
+  },
+  data() {
+    return {
+      users: {},
+    };
+  },
+  methods: {
+    getUsers() {
+      this.users = usersService.getUsers();
+    },
+  },
+
+  mounted() {
+    this.getUsers();
+  },
 };
 </script>
 <style></style>
