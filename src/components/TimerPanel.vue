@@ -1,6 +1,6 @@
 <template>
   <v-card class="mt-6 pa-6">
-    <v-card-title
+    <v-card-title class="pl-0"
       >Обновлять данные каждые {{ Math.round(slider) }} минут</v-card-title
     >
     <v-slider
