@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-row dense>
+    <v-row class="mt-4" dense>
       <v-col v-for="user in Object.keys(users)" :key="user" cols="12">
         <user-card
           :user="user"
