@@ -64,8 +64,15 @@ export default {
   components: { MyInput },
   name: "weather-card",
   emits: ["addCityToFavorites"],
+  props: {
+    timer: {
+      interval: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
+      timerId: 0,
       city: "Москва",
       id: "",
       country: "",
@@ -87,6 +94,7 @@ export default {
       this.city = city;
     },
     async setWeather() {
+      console.log("setWeather");
       const weatherData = await getWeather(this.city);
       this.status = weatherData.status;
       if (weatherData.status == 200) {
@@ -102,10 +110,22 @@ export default {
         this.statusText = weatherData.statusText;
       }
     },
+
+    async setTimer(interval) {
+      clearInterval(this.timerId);
+      if (interval) {
+        this.timerId = await setInterval(() => {
+          this.setWeather();
+        }, interval * 1000 * 60);
+      }
+    },
   },
   watch: {
     city() {
       this.setWeather();
+    },
+    timer(value) {
+      this.setTimer(value);
     },
   },
   mounted() {

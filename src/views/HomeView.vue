@@ -3,8 +3,11 @@
     <v-container>
       <v-row dense>
         <v-col cols="12" md="6">
-          <weather-card @addCityToFavorites="addCityToFavorites" />
-          <timer-panel />
+          <weather-card
+            @addCityToFavorites="addCityToFavorites"
+            :timer="timer"
+          />
+          <timer-panel @changeSlider="setTimer" />
         </v-col>
         <v-col cols="12" md="6">
           <weather-list
@@ -31,9 +34,13 @@ export default {
   data() {
     return {
       cityList: [],
+      timer: 0,
     };
   },
   methods: {
+    setTimer(value) {
+      this.timer = value;
+    },
     contains(arr, elem) {
       return arr.find((i) => i.id === elem.id);
     },

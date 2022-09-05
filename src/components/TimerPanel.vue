@@ -1,7 +1,7 @@
 <template>
   <v-card class="mt-6 pa-6">
     <v-card-title class="pl-0"
-      >Обновлять данные каждые {{ Math.round(slider) }} минут</v-card-title
+      >Обновлять данные каждые {{ Math.round(slider) }} мин.</v-card-title
     >
     <v-slider
       v-model="slider"
@@ -25,7 +25,7 @@ export default {
   },
   watch: {
     slider() {
-      this.$emit("changeSlider", slider);
+      this.$emit("changeSlider", this.slider);
     },
   },
 };
