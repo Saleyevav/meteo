@@ -1,6 +1,6 @@
 <template>
   <v-app app>
-    <v-layout>
+    <v-layout class="layout">
       <navbar />
       <router-view></router-view>
     </v-layout>
@@ -20,3 +20,8 @@ export default {
   }),
 };
 </script>
+<style>
+.layout {
+  background-color: rgba(24, 22, 22, 0.048);
+}
+</style>

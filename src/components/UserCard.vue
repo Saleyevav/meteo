@@ -1,5 +1,5 @@
 <template lang>
-  <v-card max-width="1200" class="mx-auto pa-4">
+  <v-card max-width="1200" class="mx-auto mt-4 pa-4">
     <v-row>
       <v-col class="d-flex align-center" cols="12" md="4"
         >Пользователь: <strong class="pl-2">{{ user }}</strong></v-col
@@ -20,7 +20,7 @@
       </v-col>
 
       <v-col
-        class="d-flex flex-column align-center justify-start justify-md-end"
+        class="d-flex flex-column align-md-start align-md-end"
         cols="12"
         md="2"
       >
