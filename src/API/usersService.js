@@ -41,9 +41,9 @@ export function getUserData(name) {
   return null;
 }
 
-export function addUser(name, password) {
+export function addUser(name, password, isAdmin) {
   const users = JSON.parse(localStorage.users);
-  users[name] = { password: password, cityList: [] };
+  users[name] = { password: password, isAdmin: isAdmin, cityList: [] };
   localStorage.setItem("users", JSON.stringify(users));
 }
 

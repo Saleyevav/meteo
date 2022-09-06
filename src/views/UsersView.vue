@@ -10,7 +10,7 @@
         />
       </v-col>
     </v-row>
-    <add-user-form class="mt-4" />
+    <add-user-form class="mt-4" @addUser="getUsers" />
   </v-main>
 </template>
 <script>

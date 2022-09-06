@@ -1,7 +1,7 @@
 <template>
   <v-card max-width="1200" class="mx-auto mt-6 pa-4">
     <v-card-title class="pl-0">Добавить нового пользователя</v-card-title>
-    <v-row>
+    <v-row class="d-flex justify-center">
       <v-col class="d-flex align-center" cols="12" md="4">
         <v-text-field
           v-model="name"
@@ -17,7 +17,7 @@
       <v-col class="d-flex align-center" cols="12" md="4">
         <v-text-field
           :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-          v-model="name"
+          v-model="password"
           :type="show1 ? 'text' : 'password'"
           name="input-password"
           label="Пароль"
@@ -41,7 +41,13 @@
         cols="12"
         md="2"
       >
-        <v-btn width="120" color="success" @click="" class="mb-5">
+        <v-btn
+          width="120"
+          color="success"
+          @click="addUser"
+          class="mb-5"
+          :disabled="name.length < 4"
+        >
           Добавить
         </v-btn>
       </v-col>
@@ -49,6 +55,7 @@
   </v-card>
 </template>
 <script>
+import { usersService } from "@/API/usersService";
 export default {
   data() {
     return {
@@ -57,16 +64,29 @@ export default {
       password: "",
       show1: false,
       show2: true,
-      password: "Password",
+      password: "",
       rules: {
         required: (value) => !!value || "Required.",
-        min: (v) => v.length >= 4 || "Min 4 characters",
+        min: (v) => v.length >= 4 || "Минимум 4 символа",
         // nameIsTaken: () => "Имя занято",
       },
     };
   },
   methods: {
-    nameIsTaken() {},
+    addUser() {
+      if (!this.nameIsTaken()) {
+        usersService.addUser(this.name, this.password, this.isAdmin);
+        this.name = "";
+        this.password = "";
+        this.isAdmin = false;
+        this.$emit("addUser");
+      } else {
+        alert("Имя пользователя занято");
+      }
+    },
+    nameIsTaken() {
+      return !!usersService.getUsers()[this.name];
+    },
   },
 };
 </script>
