@@ -6,6 +6,7 @@
           :user="user"
           :password="users[user].password"
           :isAdmin="users[user].isAdmin"
+          @deleteUser="getUsers"
         />
       </v-col>
     </v-row>

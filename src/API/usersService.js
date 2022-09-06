@@ -47,6 +47,12 @@ export function addUser(name, password) {
   localStorage.setItem("users", JSON.stringify(users));
 }
 
+export function deleteUser(name) {
+  const users = JSON.parse(localStorage.users);
+  delete users[name];
+  localStorage.setItem("users", JSON.stringify(users));
+}
+
 export function setCityList(name, cityList) {
   const users = JSON.parse(localStorage.users);
   users[name].cityList = cityList;

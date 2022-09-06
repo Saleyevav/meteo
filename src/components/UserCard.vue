@@ -20,11 +20,27 @@
       </v-col>
 
       <v-col
-        class="d-flex align-center justify-start justify-md-end"
+        class="d-flex flex-column align-center justify-start justify-md-end"
         cols="12"
         md="2"
       >
-        <v-btn color="success" class="" @click="save" :disabled="!changeProps">
+        <v-btn
+          width="120"
+          color="red"
+          class="my-2"
+          @click="deleteUser"
+          :disabled="$store.state.userName == user"
+        >
+          Удалить
+        </v-btn>
+
+        <v-btn
+          width="120"
+          color="success"
+          class="my-2"
+          @click="save"
+          :disabled="!changeProps"
+        >
           Сохранить
         </v-btn>
       </v-col>
@@ -55,6 +71,10 @@ export default {
     save() {
       usersService.changeAccess(this.user, this.isAdmin);
       this.changeProps = !this.changeProps;
+    },
+    deleteUser() {
+      usersService.deleteUser(this.user);
+      this.$emit("deleteUser", this.user);
     },
   },
 
