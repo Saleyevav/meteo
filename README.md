@@ -14,6 +14,11 @@ npm run serve
 ```
 npm run build
 ```
+### Login data
+
+Name: admin
+
+Password: admin
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
