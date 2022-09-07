@@ -12,7 +12,10 @@
     <v-app-bar-title class="text-h4 d-none d-md-flex">METEO</v-app-bar-title>
 
     <v-spacer></v-spacer>
-    <v-btn @click="$router.push('/')" v-if="$store.state.isLogin">
+    <v-btn
+      @click="$router.push('/')"
+      v-if="$store.state.isLogin && $store.state.isAdmin"
+    >
       На главную
     </v-btn>
     <v-btn
