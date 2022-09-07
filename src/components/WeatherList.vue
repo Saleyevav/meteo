@@ -12,9 +12,11 @@
 </template>
 <script>
 import WeatherCardLite from "@/components/WeatherCardLite.vue";
+
 export default {
   name: "weather-list",
   emits: ["deleteCity", "changeCity"],
+
   props: {
     cityList: {
       type: Array,
@@ -25,12 +27,15 @@ export default {
       default: 0,
     },
   },
+
   components: {
     WeatherCardLite,
   },
+
   data() {
     return {};
   },
+
   methods: {
     deleteCity(city) {
       this.$emit("deleteCity", city);

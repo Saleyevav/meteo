@@ -9,6 +9,7 @@
           />
           <timer-panel @changeSlider="setTimer" />
         </v-col>
+
         <v-col cols="12" md="6">
           <weather-list
             :cityList="cityList"
@@ -26,22 +27,26 @@ import WeatherCard from "@/components/WeatherCard.vue";
 import WeatherList from "@/components/WeatherList.vue";
 import TimerPanel from "@/components/TimerPanel.vue";
 import { usersService } from "@/API/usersService";
+
 export default {
   components: {
     WeatherCard,
     WeatherList,
     TimerPanel,
   },
+
   data() {
     return {
       cityList: [],
       timer: 0,
     };
   },
+
   methods: {
     setTimer(value) {
       this.timer = value;
     },
+
     contains(arr, elem) {
       return arr.find((i) => i.id === elem.id);
     },

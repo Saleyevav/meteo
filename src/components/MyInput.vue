@@ -18,10 +18,12 @@ export default {
       message: "",
     };
   },
+
   methods: {
     clear() {
       this.message = "";
     },
+
     send() {
       this.$emit("changeCity", this.message.trim());
       this.clear();

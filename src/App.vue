@@ -14,14 +14,5 @@ export default {
     Navbar,
   },
   name: "App",
-
-  data: () => ({
-    //
-  }),
 };
 </script>
-<style>
-.layout {
-  background-color: rgba(24, 22, 22, 0.048);
-}
-</style>

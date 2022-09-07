@@ -5,6 +5,7 @@
         <v-alert prominent type="error" variant="outlined" v-if="showAlert">
           Неверное имя или пароль
         </v-alert>
+
         <v-form>
           <v-text-field
             v-model="name"
@@ -29,6 +30,7 @@
 </template>
 <script>
 import { usersService } from "@/API/usersService";
+
 export default {
   data() {
     return {
@@ -37,6 +39,7 @@ export default {
       showAlert: false,
     };
   },
+
   methods: {
     login() {
       if (this.name) {

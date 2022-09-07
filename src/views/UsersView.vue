@@ -10,6 +10,7 @@
         />
       </v-col>
     </v-row>
+
     <add-user-form class="mt-4" @addUser="getUsers" />
   </v-main>
 </template>
@@ -17,16 +18,19 @@
 import UserCard from "@/components/UserCard.vue";
 import AddUserForm from "@/components/AddUserForm.vue";
 import { usersService } from "@/API/usersService";
+
 export default {
   components: {
     UserCard,
     AddUserForm,
   },
+
   data() {
     return {
       users: {},
     };
   },
+
   methods: {
     getUsers() {
       this.users = usersService.getUsers();

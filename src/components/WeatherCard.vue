@@ -18,6 +18,7 @@
             </v-col>
           </v-row>
         </v-card-text>
+
         <v-list-item density="compact">
           <v-list-item-subtitle
             >Ощущается как {{ feels_like }}&deg;C</v-list-item-subtitle
@@ -28,6 +29,7 @@
           <v-list-item-title left>
             <v-icon icon="mdi-weather-windy"></v-icon>
           </v-list-item-title>
+
           <v-list-item-subtitle>{{ wind }} m/s</v-list-item-subtitle>
         </v-list-item>
 
@@ -35,6 +37,7 @@
           <v-list-item-title left>
             <v-icon icon="mdi-water-percent"></v-icon>
           </v-list-item-title>
+
           <v-list-item-subtitle>{{ humidity }}%</v-list-item-subtitle>
         </v-list-item>
 
@@ -50,12 +53,14 @@
           >, попробуйте другой.
         </v-alert>
       </div>
+
       <div v-else>
         <v-alert prominent type="error" variant="outlined">
           Ошибка <strong>{{ status }}:</strong> {{ statusText }}
         </v-alert>
       </div>
     </div>
+
     <div v-else>
       <v-progress-circular indeterminate color="teal"></v-progress-circular>
     </div>
@@ -69,12 +74,14 @@ export default {
   components: { MyInput },
   name: "weather-card",
   emits: ["addCityToFavorites"],
+
   props: {
     timer: {
       interval: Number,
       default: 0,
     },
   },
+
   data() {
     return {
       city: "Москва",
@@ -92,13 +99,16 @@ export default {
       isLoading: false,
     };
   },
+
   methods: {
     addCityToFavorites() {
       this.$emit("addCityToFavorites", { name: this.city, id: this.id });
     },
+
     changeCity(city) {
       this.city = city;
     },
+
     async setWeather() {
       this.isLoading = false;
       const weatherData = await getWeather(this.city);
@@ -127,14 +137,17 @@ export default {
       }
     },
   },
+
   watch: {
     city() {
       this.setWeather();
     },
+
     timer(value) {
       this.setTimer(value);
     },
   },
+
   mounted() {
     this.setWeather();
   },

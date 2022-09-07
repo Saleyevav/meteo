@@ -1,6 +1,7 @@
 <template>
   <v-card max-width="1200" class="mx-auto mt-6 pa-4">
     <v-card-title class="pl-0">Добавить нового пользователя</v-card-title>
+
     <v-row class="d-flex justify-center">
       <v-col class="d-flex align-center" cols="12" md="4">
         <v-text-field
@@ -56,6 +57,7 @@
 </template>
 <script>
 import { usersService } from "@/API/usersService";
+
 export default {
   data() {
     return {
@@ -72,6 +74,7 @@ export default {
       },
     };
   },
+
   methods: {
     addUser() {
       if (!this.nameIsTaken()) {
@@ -84,6 +87,7 @@ export default {
         alert("Имя пользователя занято");
       }
     },
+
     nameIsTaken() {
       return !!usersService.getUsers()[this.name];
     },

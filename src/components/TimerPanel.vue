@@ -3,6 +3,7 @@
     <v-card-title class="pl-0"
       >Обновлять данные каждые {{ Math.round(slider) }} мин.</v-card-title
     >
+
     <v-slider
       v-model="slider"
       class="align-center"
@@ -23,6 +24,7 @@ export default {
       slider: 0,
     };
   },
+
   watch: {
     slider() {
       this.$emit("changeSlider", Math.round(this.slider));

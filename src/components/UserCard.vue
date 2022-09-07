@@ -53,6 +53,7 @@ export default {
   data() {
     return { changeProps: false };
   },
+
   props: {
     user: {
       type: String,
@@ -67,11 +68,13 @@ export default {
       default: false,
     },
   },
+
   methods: {
     save() {
       usersService.changeAccess(this.user, this.isAdmin);
       this.changeProps = !this.changeProps;
     },
+
     deleteUser() {
       usersService.deleteUser(this.user);
       this.$emit("deleteUser", this.user);

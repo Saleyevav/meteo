@@ -29,9 +29,11 @@
         </v-alert>
       </div>
     </div>
+
     <div v-else>
       <v-progress-circular indeterminate color="teal"></v-progress-circular>
     </div>
+
     <v-row align="center" class="mt-4" hide-gutters no-gutters>
       <v-col cols="6">
         <my-input
@@ -41,7 +43,9 @@
           @changeCity="changeCity"
         ></my-input>
       </v-col>
+
       <v-spacer></v-spacer>
+
       <v-col cols="3">
         <v-card-actions>
           <v-btn @click="deleteCity" class="mb-4 ml-auto"> Удалить </v-btn>
@@ -54,10 +58,12 @@
 <script>
 import { getWeather } from "@/API/getWeather";
 import MyInput from "@/components/MyInput.vue";
+
 export default {
   components: { MyInput },
   name: "weather-card-lite",
   emits: ["deleteCity", "changeCity"],
+
   props: {
     cityName: {
       type: String,
@@ -68,6 +74,7 @@ export default {
       default: 0,
     },
   },
+
   data() {
     return {
       city: this.cityName,
@@ -82,10 +89,12 @@ export default {
       isLoading: false,
     };
   },
+
   methods: {
     deleteCity() {
       this.$emit("deleteCity", { name: this.city, id: this.id });
     },
+
     async changeCity(newCityName) {
       const weatherData = await getWeather(newCityName);
       this.status = weatherData.status;
@@ -99,6 +108,7 @@ export default {
         this.statusText = weatherData.statusText;
       }
     },
+
     async setWeather() {
       this.isLoading = false;
       const weatherData = await getWeather(this.city);
@@ -114,6 +124,7 @@ export default {
         this.statusText = weatherData.statusText;
       }
     },
+
     async setTimer(interval) {
       clearInterval(this.timerId);
       if (interval) {
@@ -128,10 +139,12 @@ export default {
     async city() {
       await this.setWeather();
     },
+
     timer(value) {
       this.setTimer(value);
     },
   },
+
   mounted() {
     this.setWeather();
   },
