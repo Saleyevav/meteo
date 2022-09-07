@@ -17,7 +17,7 @@ npm run build
 ### Login data
 
 Name: admin
----
+***
 Password: admin
 
 ### Customize configuration
