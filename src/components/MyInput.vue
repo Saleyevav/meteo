@@ -12,22 +12,21 @@
   ></v-text-field>
 </template>
 <script>
+import { ref } from "vue";
 export default {
-  data() {
-    return {
-      message: "",
-    };
-  },
+  setup(props, { emit }) {
+    const message = ref("");
 
-  methods: {
-    clear() {
-      this.message = "";
-    },
+    function clear() {
+      message.value = "";
+    }
 
-    send() {
-      this.$emit("changeCity", this.message.trim());
-      this.clear();
-    },
+    function send() {
+      emit("changeCity", message.value.trim());
+      clear();
+    }
+
+    return { message, clear, send };
   },
 };
 </script>
