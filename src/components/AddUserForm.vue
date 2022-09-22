@@ -1,3 +1,48 @@
+<script>
+import { usersService } from "@/API/usersService";
+import { ref } from "vue";
+export default {
+  setup(props, { emit }) {
+    const isAdmin = ref(false);
+    const name = ref("");
+    const password = ref("");
+    const show1 = ref(false);
+    const show2 = ref(true);
+
+    const rules = {
+      required: (value) => !!value || "Required.",
+      min: (v) => v.length >= 4 || "Минимум 4 символа",
+    };
+
+    function addUser() {
+      if (!nameIsTaken()) {
+        usersService.addUser(name.value, password.value, isAdmin.value);
+        name.value = "";
+        password.value = "";
+        isAdmin.value = false;
+        emit("addUser");
+      } else {
+        alert("Имя пользователя занято");
+      }
+    }
+
+    function nameIsTaken() {
+      return !!usersService.getUsers()[name.value];
+    }
+
+    return {
+      isAdmin,
+      name,
+      password,
+      show1,
+      show2,
+      rules,
+      addUser,
+    };
+  },
+};
+</script>
+
 <template>
   <v-card max-width="1200" class="mx-auto mt-6 pa-4">
     <v-card-title class="pl-0">Добавить нового пользователя</v-card-title>
@@ -55,43 +100,3 @@
     </v-row>
   </v-card>
 </template>
-<script>
-import { usersService } from "@/API/usersService";
-
-export default {
-  data() {
-    return {
-      isAdmin: false,
-      name: "",
-      password: "",
-      show1: false,
-      show2: true,
-      password: "",
-      rules: {
-        required: (value) => !!value || "Required.",
-        min: (v) => v.length >= 4 || "Минимум 4 символа",
-        // nameIsTaken: () => "Имя занято",
-      },
-    };
-  },
-
-  methods: {
-    addUser() {
-      if (!this.nameIsTaken()) {
-        usersService.addUser(this.name, this.password, this.isAdmin);
-        this.name = "";
-        this.password = "";
-        this.isAdmin = false;
-        this.$emit("addUser");
-      } else {
-        alert("Имя пользователя занято");
-      }
-    },
-
-    nameIsTaken() {
-      return !!usersService.getUsers()[this.name];
-    },
-  },
-};
-</script>
-<style></style>
