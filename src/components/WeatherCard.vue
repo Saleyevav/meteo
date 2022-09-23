@@ -60,9 +60,7 @@ export default {
     async function setTimer(interval) {
       clearInterval(timerId);
       if (interval) {
-        timerId = await setInterval(() => {
-          setWeather();
-        }, interval * 1000 * 60);
+        timerId = await setInterval(setWeather, interval * 1000 * 60);
       }
     }
 

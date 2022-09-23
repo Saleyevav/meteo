@@ -1,3 +1,104 @@
+<script>
+import { getWeather } from "@/API/getWeather";
+import MyInput from "@/components/MyInput.vue";
+import { ref, watch, onMounted } from "vue";
+
+export default {
+  components: { MyInput },
+  name: "weather-card-lite",
+  emits: ["deleteCity", "changeCity"],
+
+  props: {
+    cityName: {
+      type: String,
+      default: "Киржач",
+    },
+    timer: {
+      interval: Number,
+      default: 0,
+    },
+  },
+
+  setup(props, { emit }) {
+    const city = ref(props.cityName);
+    const id = ref("");
+    const country = ref("");
+    const temp = ref("");
+    const description = ref("нет данных");
+    const weatherIcon = ref("");
+    const status = ref(200);
+    const statusText = ref("OK");
+    let timerId = 0;
+    const isLoading = ref(false);
+
+    function deleteCity() {
+      emit("deleteCity", { name: city.value, id: id.value });
+    }
+
+    async function changeCity(newCityName) {
+      const weatherData = await getWeather(newCityName);
+      status.value = weatherData.status;
+      if (weatherData.status == 200) {
+        emit(
+          "changeCity",
+          { name: city.value, id: id.value },
+          { name: newCityName, id: weatherData.id },
+        );
+      } else {
+        statusText.value = weatherData.statusText;
+      }
+    }
+
+    async function setWeather() {
+      isLoading.value = false;
+      const weatherData = await getWeather(city.value);
+      isLoading.value = true;
+      status.value = weatherData.status;
+      if (weatherData.status == 200) {
+        id.value = weatherData.id;
+        country.value = weatherData.country;
+        temp.value = weatherData.temp;
+        description.value = weatherData.description;
+        weatherIcon.value = weatherData.icon;
+      } else {
+        statusText.value = weatherData.statusText;
+      }
+    }
+
+    async function setTimer(interval) {
+      clearInterval(timerId);
+      if (interval) {
+        timerId = await setInterval(setWeather, interval * 1000 * 60);
+      }
+    }
+
+    watch(city, () => setWeather());
+
+    watch(
+      () => props.timer,
+      (value) => setTimer(value),
+    );
+
+    onMounted(setWeather);
+
+    return {
+      city,
+      id,
+      country,
+      temp,
+      description,
+      weatherIcon,
+      status,
+      statusText,
+      isLoading,
+      deleteCity,
+      changeCity,
+      setWeather,
+    };
+  },
+};
+</script>
+
 <template>
   <v-card>
     <div v-if="isLoading">
@@ -54,100 +155,3 @@
     </v-row>
   </v-card>
 </template>
-
-<script>
-import { getWeather } from "@/API/getWeather";
-import MyInput from "@/components/MyInput.vue";
-
-export default {
-  components: { MyInput },
-  name: "weather-card-lite",
-  emits: ["deleteCity", "changeCity"],
-
-  props: {
-    cityName: {
-      type: String,
-      default: "Киржач",
-    },
-    timer: {
-      interval: Number,
-      default: 0,
-    },
-  },
-
-  data() {
-    return {
-      city: this.cityName,
-      id: "",
-      country: "",
-      temp: "",
-      description: "нет данных",
-      weatherIcon: "",
-      status: 200,
-      statusText: "OK",
-      timerId: 0,
-      isLoading: false,
-    };
-  },
-
-  methods: {
-    deleteCity() {
-      this.$emit("deleteCity", { name: this.city, id: this.id });
-    },
-
-    async changeCity(newCityName) {
-      const weatherData = await getWeather(newCityName);
-      this.status = weatherData.status;
-      if (weatherData.status == 200) {
-        this.$emit(
-          "changeCity",
-          { name: this.city, id: this.id },
-          { name: newCityName, id: weatherData.id },
-        );
-      } else {
-        this.statusText = weatherData.statusText;
-      }
-    },
-
-    async setWeather() {
-      this.isLoading = false;
-      const weatherData = await getWeather(this.city);
-      this.isLoading = true;
-      this.status = weatherData.status;
-      if (weatherData.status == 200) {
-        this.id = weatherData.id;
-        this.country = weatherData.country;
-        this.temp = weatherData.temp;
-        this.description = weatherData.description;
-        this.weatherIcon = weatherData.icon;
-      } else {
-        this.statusText = weatherData.statusText;
-      }
-    },
-
-    async setTimer(interval) {
-      clearInterval(this.timerId);
-      if (interval) {
-        this.timerId = await setInterval(() => {
-          this.setWeather();
-        }, interval * 1000 * 60);
-      }
-    },
-  },
-
-  watch: {
-    async city() {
-      await this.setWeather();
-    },
-
-    timer(value) {
-      this.setTimer(value);
-    },
-  },
-
-  mounted() {
-    this.setWeather();
-  },
-};
-</script>
-<style></style>
