@@ -1,3 +1,77 @@
+<script>
+import WeatherCard from "@/components/WeatherCard.vue";
+import WeatherList from "@/components/WeatherList.vue";
+import TimerPanel from "@/components/TimerPanel.vue";
+import { usersService } from "@/API/usersService";
+import { ref, onMounted } from "vue";
+import { useStore } from "vuex";
+
+export default {
+  components: {
+    WeatherCard,
+    WeatherList,
+    TimerPanel,
+  },
+
+  setup() {
+    const cityList = ref([]);
+    const timer = ref(0);
+    const store = useStore();
+
+    function setTimer(value) {
+      timer.value = value;
+    }
+
+    function contains(arr, elem) {
+      return arr.find((i) => i.id === elem.id);
+    }
+
+    function deleteCity(city) {
+      cityList.value = cityList.value.filter((c) => {
+        return c.id !== city.id;
+      });
+      usersService.setCityList(store.state.userName, cityList.value);
+    }
+
+    function changeCity(city, newCity) {
+      if (!contains(cityList.value, newCity)) {
+        deleteCity(city);
+        addCityToFavorites(newCity);
+      } else {
+        alert(newCity.name + " уже в избранном!");
+      }
+    }
+
+    function addCityToFavorites(city) {
+      if (!contains(cityList.value, city)) {
+        cityList.value.push(city);
+        usersService.setCityList(store.state.userName, cityList.value);
+        getCityList();
+      } else {
+        alert(city.name + " уже в избранном!");
+      }
+    }
+
+    function getCityList() {
+      const userData = usersService.getUserData(store.state.userName);
+      cityList.value = userData.cityList;
+    }
+
+    onMounted(getCityList);
+
+    return {
+      cityList,
+      timer,
+      setTimer,
+      deleteCity,
+      changeCity,
+      addCityToFavorites,
+      getCityList,
+    };
+  },
+};
+</script>
+
 <template>
   <v-main>
     <v-container>
@@ -22,70 +96,3 @@
     </v-container>
   </v-main>
 </template>
-<script>
-import WeatherCard from "@/components/WeatherCard.vue";
-import WeatherList from "@/components/WeatherList.vue";
-import TimerPanel from "@/components/TimerPanel.vue";
-import { usersService } from "@/API/usersService";
-
-export default {
-  components: {
-    WeatherCard,
-    WeatherList,
-    TimerPanel,
-  },
-
-  data() {
-    return {
-      cityList: [],
-      timer: 0,
-    };
-  },
-
-  methods: {
-    setTimer(value) {
-      this.timer = value;
-    },
-
-    contains(arr, elem) {
-      return arr.find((i) => i.id === elem.id);
-    },
-
-    deleteCity(city) {
-      this.cityList = this.cityList.filter((c) => {
-        return c.id !== city.id;
-      });
-      usersService.setCityList(this.$store.state.userName, this.cityList);
-    },
-
-    changeCity(city, newCity) {
-      if (!this.contains(this.cityList, newCity)) {
-        this.deleteCity(city);
-        this.addCityToFavorites(newCity);
-      } else {
-        alert(newCity.name + " уже в избранном!");
-      }
-    },
-
-    addCityToFavorites(city) {
-      if (!this.contains(this.cityList, city)) {
-        this.cityList.push(city);
-        usersService.setCityList(this.$store.state.userName, this.cityList);
-        this.getCityList();
-      } else {
-        alert(city.name + " уже в избранном!");
-      }
-    },
-
-    getCityList() {
-      const userData = usersService.getUserData(this.$store.state.userName);
-      this.cityList = userData.cityList;
-    },
-  },
-
-  mounted() {
-    this.getCityList();
-  },
-};
-</script>
-<style></style>
