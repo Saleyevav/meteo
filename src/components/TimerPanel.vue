@@ -1,7 +1,9 @@
 <script>
 import { watch, ref } from "vue";
+
 export default {
   name: "timer-panel",
+
   setup(props, { emit }) {
     const min = 0;
     const max = 60;
@@ -14,6 +16,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <v-card class="mt-6 pa-6">
     <v-card-title class="pl-0"
