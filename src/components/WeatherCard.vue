@@ -1,3 +1,100 @@
+<script>
+import { getWeather } from "@/API/getWeather";
+import MyInput from "@/components/MyInput.vue";
+import { ref, watch, onMounted } from "vue";
+
+export default {
+  components: { MyInput },
+  name: "weather-card",
+  emits: ["addCityToFavorites"],
+
+  props: {
+    timer: {
+      type: Number,
+      default: 0,
+    },
+  },
+
+  setup(props, { emit }) {
+    const city = ref("Москва");
+    const id = ref("");
+    const country = ref("");
+    const temp = ref("");
+    const feels_like = ref("");
+    const wind = ref(0);
+    const description = ref("нет данных");
+    const weatherIcon = ref("");
+    const humidity = ref(0);
+    const status = ref(200);
+    const statusText = ref("OK");
+    let timerId = 0;
+    const isLoading = ref(false);
+
+    function addCityToFavorites() {
+      emit("addCityToFavorites", { name: city.value, id: id.value });
+    }
+
+    function changeCity(cityName) {
+      city.value = cityName;
+    }
+
+    async function setWeather() {
+      isLoading.value = false;
+      const weatherData = await getWeather(city.value);
+      isLoading.value = true;
+      status.value = weatherData.status;
+      if (weatherData.status == 200) {
+        id.value = weatherData.id;
+        country.value = weatherData.country;
+        temp.value = weatherData.temp;
+        wind.value = weatherData.wind;
+        description.value = weatherData.description;
+        weatherIcon.value = weatherData.icon;
+        humidity.value = weatherData.humidity;
+        feels_like.value = weatherData.feels_like;
+      } else {
+        statusText.value = weatherData.statusText;
+      }
+    }
+
+    async function setTimer(interval) {
+      clearInterval(timerId);
+      if (interval) {
+        timerId = await setInterval(() => {
+          setWeather();
+        }, interval * 1000 * 60);
+      }
+    }
+
+    watch(city, () => setWeather());
+
+    watch(
+      () => props.timer,
+      (value) => setTimer(value),
+    );
+
+    onMounted(setWeather);
+
+    return {
+      city,
+      country,
+      temp,
+      feels_like,
+      wind,
+      description,
+      weatherIcon,
+      humidity,
+      status,
+      statusText,
+      isLoading,
+      addCityToFavorites,
+      changeCity,
+      setWeather,
+    };
+  },
+};
+</script>
+
 <template>
   <my-input variant="solo" @changeCity="changeCity"></my-input>
   <v-card class="mx-auto" max-width="368">
@@ -66,91 +163,3 @@
     </div>
   </v-card>
 </template>
-
-<script>
-import { getWeather } from "@/API/getWeather";
-import MyInput from "@/components/MyInput.vue";
-export default {
-  components: { MyInput },
-  name: "weather-card",
-  emits: ["addCityToFavorites"],
-
-  props: {
-    timer: {
-      interval: Number,
-      default: 0,
-    },
-  },
-
-  data() {
-    return {
-      city: "Москва",
-      id: "",
-      country: "",
-      temp: "",
-      feels_like: "",
-      wind: 0,
-      description: "нет данных",
-      weatherIcon: "",
-      humidity: 0,
-      status: 200,
-      statusText: "OK",
-      timerId: 0,
-      isLoading: false,
-    };
-  },
-
-  methods: {
-    addCityToFavorites() {
-      this.$emit("addCityToFavorites", { name: this.city, id: this.id });
-    },
-
-    changeCity(city) {
-      this.city = city;
-    },
-
-    async setWeather() {
-      this.isLoading = false;
-      const weatherData = await getWeather(this.city);
-      this.isLoading = true;
-      this.status = weatherData.status;
-      if (weatherData.status == 200) {
-        this.id = weatherData.id;
-        this.country = weatherData.country;
-        this.temp = weatherData.temp;
-        this.wind = weatherData.wind;
-        this.description = weatherData.description;
-        this.weatherIcon = weatherData.icon;
-        this.humidity = weatherData.humidity;
-        this.feels_like = weatherData.feels_like;
-      } else {
-        this.statusText = weatherData.statusText;
-      }
-    },
-
-    async setTimer(interval) {
-      clearInterval(this.timerId);
-      if (interval) {
-        this.timerId = await setInterval(() => {
-          this.setWeather();
-        }, interval * 1000 * 60);
-      }
-    },
-  },
-
-  watch: {
-    city() {
-      this.setWeather();
-    },
-
-    timer(value) {
-      this.setTimer(value);
-    },
-  },
-
-  mounted() {
-    this.setWeather();
-  },
-};
-</script>
-<style></style>
