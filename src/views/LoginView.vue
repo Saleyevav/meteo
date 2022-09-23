@@ -1,3 +1,42 @@
+<script>
+import { usersService } from "@/API/usersService";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { ref } from "vue";
+
+export default {
+  setup() {
+    const name = ref("");
+    const password = ref("");
+    const showAlert = ref(false);
+    const store = useStore();
+    const router = useRouter();
+
+    function login() {
+      if (name.value) {
+        const user = usersService.getUserData(name.value);
+        if (user) {
+          if (user.name == name.value && user.password == password.value) {
+            //Успешная авторизация
+            store.commit("login", user.name);
+            router.push("/");
+            if (user.isAdmin) {
+              store.commit("setIsAdminTrue");
+            }
+          } else {
+            showAlert.value = true;
+          }
+        } else {
+          showAlert.value = true;
+        }
+      }
+    }
+
+    return { name, password, showAlert, login };
+  },
+};
+</script>
+
 <template>
   <v-main>
     <v-sheet class="d-flex justify-center pt-10" @keyup.enter="login">
@@ -28,39 +67,3 @@
     </v-sheet>
   </v-main>
 </template>
-<script>
-import { usersService } from "@/API/usersService";
-
-export default {
-  data() {
-    return {
-      name: "",
-      password: "",
-      showAlert: false,
-    };
-  },
-
-  methods: {
-    login() {
-      if (this.name) {
-        const user = usersService.getUserData(this.name);
-        if (user) {
-          if (user.name == this.name && user.password == this.password) {
-            //Успешная авторизация
-            this.$store.commit("login", user.name);
-            this.$router.push("/");
-            if (user.isAdmin) {
-              this.$store.commit("setIsAdminTrue");
-            }
-          } else {
-            this.showAlert = true;
-          }
-        } else {
-          this.showAlert = true;
-        }
-      }
-    },
-  },
-};
-</script>
-<style></style>
