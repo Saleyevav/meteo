@@ -1,15 +1,3 @@
-<template>
-  <v-row dense>
-    <v-col v-for="city in cityList" :key="city.id" cols="12">
-      <weather-card-lite
-        :cityName="city.name"
-        :timer="timer"
-        @deleteCity="deleteCity"
-        @changeCity="changeCity"
-      />
-    </v-col>
-  </v-row>
-</template>
 <script>
 import WeatherCardLite from "@/components/WeatherCardLite.vue";
 
@@ -32,18 +20,29 @@ export default {
     WeatherCardLite,
   },
 
-  data() {
-    return {};
-  },
+  setup(props, { emit }) {
+    function deleteCity(city) {
+      emit("deleteCity", city);
+    }
 
-  methods: {
-    deleteCity(city) {
-      this.$emit("deleteCity", city);
-    },
-    changeCity(city, newCity) {
-      this.$emit("changeCity", city, newCity);
-    },
+    function changeCity(city, newCity) {
+      emit("changeCity", city, newCity);
+    }
+
+    return { deleteCity, changeCity };
   },
 };
 </script>
-<style></style>
+
+<template>
+  <v-row dense>
+    <v-col v-for="city in cityList" :key="city.id" cols="12">
+      <weather-card-lite
+        :cityName="city.name"
+        :timer="timer"
+        @deleteCity="deleteCity"
+        @changeCity="changeCity"
+      />
+    </v-col>
+  </v-row>
+</template>
