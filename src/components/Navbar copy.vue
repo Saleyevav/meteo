@@ -1,22 +1,3 @@
-<script>
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
-export default {
-  setup() {
-    const router = useRouter();
-    const store = useStore();
-
-    function logout() {
-      store.commit("logout");
-      store.commit("setIsAdminFalse");
-      router.push("/login");
-    }
-
-    return { logout };
-  },
-};
-</script>
-
 <template>
   <v-app-bar
     color="teal-darken-4"
@@ -51,3 +32,15 @@ export default {
     </v-btn>
   </v-app-bar>
 </template>
+<script>
+export default {
+  methods: {
+    logout() {
+      this.$store.commit("logout");
+      this.$store.commit("setIsAdminFalse");
+      this.$router.push("/login");
+    },
+  },
+};
+</script>
+<style></style>
