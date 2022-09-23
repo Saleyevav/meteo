@@ -1,3 +1,46 @@
+<script>
+import { usersService } from "@/API/usersService";
+import { watch, ref } from "vue";
+
+export default {
+  props: {
+    user: {
+      type: String,
+      default: "",
+    },
+    password: {
+      type: String,
+      default: "",
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  setup(props, { emit }) {
+    const changeProps = ref(false);
+    const isAdmin = ref(props.isAdmin);
+
+    function save() {
+      usersService.changeAccess(props.user, isAdmin.value);
+      changeProps.value = !changeProps.value;
+    }
+
+    function deleteUser() {
+      usersService.deleteUser(props.user);
+      emit("deleteUser", props.user);
+    }
+
+    watch(isAdmin, () => {
+      changeProps.value = !changeProps.value;
+    });
+
+    return { changeProps, isAdmin, save, deleteUser };
+  },
+};
+</script>
+
 <template lang>
   <v-card max-width="1200" class="mx-auto mt-4 pa-4">
     <v-row>
@@ -47,45 +90,3 @@
     </v-row>
   </v-card>
 </template>
-<script>
-import { usersService } from "@/API/usersService";
-export default {
-  data() {
-    return { changeProps: false };
-  },
-
-  props: {
-    user: {
-      type: String,
-      default: "",
-    },
-    password: {
-      type: String,
-      default: "",
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  methods: {
-    save() {
-      usersService.changeAccess(this.user, this.isAdmin);
-      this.changeProps = !this.changeProps;
-    },
-
-    deleteUser() {
-      usersService.deleteUser(this.user);
-      this.$emit("deleteUser", this.user);
-    },
-  },
-
-  watch: {
-    isAdmin() {
-      this.changeProps = !this.changeProps;
-    },
-  },
-};
-</script>
-<style></style>
