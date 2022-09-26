@@ -1,20 +1,15 @@
-<script>
+<script setup>
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-export default {
-  setup() {
-    const router = useRouter();
-    const store = useStore();
 
-    function logout() {
-      store.commit("logout");
-      store.commit("setIsAdminFalse");
-      router.push("/login");
-    }
+const router = useRouter();
+const store = useStore();
 
-    return { logout };
-  },
-};
+function logout() {
+  store.commit("logout");
+  store.commit("setIsAdminFalse");
+  router.push("/login");
+}
 </script>
 
 <template>

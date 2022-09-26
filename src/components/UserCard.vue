@@ -1,47 +1,43 @@
-<script>
+<script setup>
 import { usersService } from "@/API/usersService";
 import { watch, ref } from "vue";
 
-export default {
-  props: {
-    user: {
-      type: String,
-      default: "",
-    },
-    password: {
-      type: String,
-      default: "",
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
+const props = defineProps({
+  user: {
+    type: String,
+    default: "",
   },
-
-  setup(props, { emit }) {
-    const changeProps = ref(false);
-    const isAdmin = ref(props.isAdmin);
-
-    function save() {
-      usersService.changeAccess(props.user, isAdmin.value);
-      changeProps.value = !changeProps.value;
-    }
-
-    function deleteUser() {
-      usersService.deleteUser(props.user);
-      emit("deleteUser", props.user);
-    }
-
-    watch(isAdmin, () => {
-      changeProps.value = !changeProps.value;
-    });
-
-    return { changeProps, isAdmin, save, deleteUser };
+  password: {
+    type: String,
+    default: "",
   },
-};
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits(["deleteUser"]);
+
+const changeProps = ref(false);
+const isAdmin = ref(props.isAdmin);
+
+function save() {
+  usersService.changeAccess(props.user, isAdmin.value);
+  changeProps.value = !changeProps.value;
+}
+
+function deleteUser() {
+  usersService.deleteUser(props.user);
+  emit("deleteUser", props.user);
+}
+
+watch(isAdmin, () => {
+  changeProps.value = !changeProps.value;
+});
 </script>
 
-<template lang>
+<template>
   <v-card max-width="1200" class="mx-auto mt-4 pa-4">
     <v-row>
       <v-col class="d-flex align-center" cols="12" md="4"

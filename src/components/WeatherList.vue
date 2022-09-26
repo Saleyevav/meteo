@@ -1,37 +1,26 @@
-<script>
+<script setup>
 import WeatherCardLite from "@/components/WeatherCardLite.vue";
 
-export default {
-  name: "weather-list",
-  emits: ["deleteCity", "changeCity"],
-
-  props: {
-    cityList: {
-      type: Array,
-      default: [],
-    },
-    timer: {
-      interval: Number,
-      default: 0,
-    },
+const props = defineProps({
+  cityList: {
+    type: Array,
+    default: [],
   },
-
-  components: {
-    WeatherCardLite,
+  timer: {
+    interval: Number,
+    default: 0,
   },
+});
 
-  setup(props, { emit }) {
-    function deleteCity(city) {
-      emit("deleteCity", city);
-    }
+const emit = defineEmits(["deleteCity", "changeCity"]);
 
-    function changeCity(city, newCity) {
-      emit("changeCity", city, newCity);
-    }
+function deleteCity(city) {
+  emit("deleteCity", city);
+}
 
-    return { deleteCity, changeCity };
-  },
-};
+function changeCity(city, newCity) {
+  emit("changeCity", city, newCity);
+}
 </script>
 
 <template>

@@ -1,47 +1,34 @@
-<script>
+<script setup>
 import { usersService } from "@/API/usersService";
 import { ref } from "vue";
 
-export default {
-  setup(props, { emit }) {
-    const isAdmin = ref(false);
-    const name = ref("");
-    const password = ref("");
-    const show1 = ref(false);
-    const show2 = ref(true);
+const emit = defineEmits(["addUser"]);
+const isAdmin = ref(false);
+const name = ref("");
+const password = ref("");
+const show1 = ref(false);
+const show2 = ref(true);
 
-    const rules = {
-      required: (value) => !!value || "Required.",
-      min: (v) => v.length >= 4 || "Минимум 4 символа",
-    };
-
-    function addUser() {
-      if (!nameIsTaken()) {
-        usersService.addUser(name.value, password.value, isAdmin.value);
-        name.value = "";
-        password.value = "";
-        isAdmin.value = false;
-        emit("addUser");
-      } else {
-        alert("Имя пользователя занято");
-      }
-    }
-
-    function nameIsTaken() {
-      return !!usersService.getUsers()[name.value];
-    }
-
-    return {
-      isAdmin,
-      name,
-      password,
-      show1,
-      show2,
-      rules,
-      addUser,
-    };
-  },
+const rules = {
+  required: (value) => !!value || "Required.",
+  min: (v) => v.length >= 4 || "Минимум 4 символа",
 };
+
+function addUser() {
+  if (!nameIsTaken()) {
+    usersService.addUser(name.value, password.value, isAdmin.value);
+    name.value = "";
+    password.value = "";
+    isAdmin.value = false;
+    emit("addUser");
+  } else {
+    alert("Имя пользователя занято");
+  }
+}
+
+function nameIsTaken() {
+  return !!usersService.getUsers()[name.value];
+}
 </script>
 
 <template>

@@ -1,102 +1,81 @@
-<script>
+<script setup>
 import { getWeather } from "@/API/getWeather";
 import MyInput from "@/components/MyInput.vue";
 import { ref, watch, onMounted } from "vue";
 
-export default {
-  components: { MyInput },
-  name: "weather-card-lite",
-  emits: ["deleteCity", "changeCity"],
-
-  props: {
-    cityName: {
-      type: String,
-      default: "Киржач",
-    },
-    timer: {
-      interval: Number,
-      default: 0,
-    },
+const props = defineProps({
+  cityName: {
+    type: String,
+    default: "Киржач",
   },
+  timer: {
+    interval: Number,
+    default: 0,
+  },
+});
 
-  setup(props, { emit }) {
-    const city = ref(props.cityName);
-    const id = ref("");
-    const country = ref("");
-    const temp = ref("");
-    const description = ref("нет данных");
-    const weatherIcon = ref("");
-    const status = ref(200);
-    const statusText = ref("OK");
-    let timerId = 0;
-    const isLoading = ref(false);
+const emit = defineEmits(["deleteCity", "changeCity"]);
 
-    function deleteCity() {
-      emit("deleteCity", { name: city.value, id: id.value });
-    }
+const city = ref(props.cityName);
+const id = ref("");
+const country = ref("");
+const temp = ref("");
+const description = ref("нет данных");
+const weatherIcon = ref("");
+const status = ref(200);
+const statusText = ref("OK");
+let timerId = 0;
+const isLoading = ref(false);
 
-    async function changeCity(newCityName) {
-      const weatherData = await getWeather(newCityName);
-      status.value = weatherData.status;
-      if (weatherData.status == 200) {
-        emit(
-          "changeCity",
-          { name: city.value, id: id.value },
-          { name: newCityName, id: weatherData.id },
-        );
-      } else {
-        statusText.value = weatherData.statusText;
-      }
-    }
+function deleteCity() {
+  emit("deleteCity", { name: city.value, id: id.value });
+}
 
-    async function setWeather() {
-      isLoading.value = false;
-      const weatherData = await getWeather(city.value);
-      isLoading.value = true;
-      status.value = weatherData.status;
-      if (weatherData.status == 200) {
-        id.value = weatherData.id;
-        country.value = weatherData.country;
-        temp.value = weatherData.temp;
-        description.value = weatherData.description;
-        weatherIcon.value = weatherData.icon;
-      } else {
-        statusText.value = weatherData.statusText;
-      }
-    }
-
-    async function setTimer(interval) {
-      clearInterval(timerId);
-      if (interval) {
-        timerId = await setInterval(setWeather, interval * 1000 * 60);
-      }
-    }
-
-    watch(city, () => setWeather());
-
-    watch(
-      () => props.timer,
-      (value) => setTimer(value),
+async function changeCity(newCityName) {
+  const weatherData = await getWeather(newCityName);
+  status.value = weatherData.status;
+  if (weatherData.status == 200) {
+    emit(
+      "changeCity",
+      { name: city.value, id: id.value },
+      { name: newCityName, id: weatherData.id },
     );
+  } else {
+    statusText.value = weatherData.statusText;
+  }
+}
 
-    onMounted(setWeather);
+async function setWeather() {
+  isLoading.value = false;
+  const weatherData = await getWeather(city.value);
+  isLoading.value = true;
+  status.value = weatherData.status;
+  if (weatherData.status == 200) {
+    id.value = weatherData.id;
+    country.value = weatherData.country;
+    temp.value = weatherData.temp;
+    description.value = weatherData.description;
+    weatherIcon.value = weatherData.icon;
+  } else {
+    statusText.value = weatherData.statusText;
+  }
+}
 
-    return {
-      city,
-      id,
-      country,
-      temp,
-      description,
-      weatherIcon,
-      status,
-      statusText,
-      isLoading,
-      deleteCity,
-      changeCity,
-      setWeather,
-    };
-  },
-};
+async function setTimer(interval) {
+  clearInterval(timerId);
+  if (interval) {
+    timerId = await setInterval(setWeather, interval * 1000 * 60);
+  }
+}
+
+watch(city, () => setWeather());
+
+watch(
+  () => props.timer,
+  (value) => setTimer(value),
+);
+
+onMounted(setWeather);
 </script>
 
 <template>

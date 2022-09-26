@@ -1,21 +1,17 @@
-<script>
+<script setup>
 import { ref } from "vue";
-export default {
-  setup(props, { emit }) {
-    const message = ref("");
 
-    function clear() {
-      message.value = "";
-    }
+const emit = defineEmits(["changeCity"]);
+const message = ref("");
 
-    function send() {
-      emit("changeCity", message.value.trim());
-      clear();
-    }
+function clear() {
+  message.value = "";
+}
 
-    return { message, clear, send };
-  },
-};
+function send() {
+  emit("changeCity", message.value.trim());
+  clear();
+}
 </script>
 
 <template>

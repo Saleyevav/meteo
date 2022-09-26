@@ -1,96 +1,73 @@
-<script>
+<script setup>
 import { getWeather } from "@/API/getWeather";
 import MyInput from "@/components/MyInput.vue";
 import { ref, watch, onMounted } from "vue";
 
-export default {
-  components: { MyInput },
-  name: "weather-card",
-  emits: ["addCityToFavorites"],
-
-  props: {
-    timer: {
-      type: Number,
-      default: 0,
-    },
+const props = defineProps({
+  timer: {
+    type: Number,
+    default: 0,
   },
+});
 
-  setup(props, { emit }) {
-    const city = ref("Москва");
-    const id = ref("");
-    const country = ref("");
-    const temp = ref("");
-    const feels_like = ref("");
-    const wind = ref(0);
-    const description = ref("нет данных");
-    const weatherIcon = ref("");
-    const humidity = ref(0);
-    const status = ref(200);
-    const statusText = ref("OK");
-    let timerId = 0;
-    const isLoading = ref(false);
+const emit = defineEmits(["addCityToFavorites"]);
 
-    function addCityToFavorites() {
-      emit("addCityToFavorites", { name: city.value, id: id.value });
-    }
+const city = ref("Москва");
+const id = ref("");
+const country = ref("");
+const temp = ref("");
+const feels_like = ref("");
+const wind = ref(0);
+const description = ref("нет данных");
+const weatherIcon = ref("");
+const humidity = ref(0);
+const status = ref(200);
+const statusText = ref("OK");
+let timerId = 0;
+const isLoading = ref(false);
 
-    function changeCity(cityName) {
-      city.value = cityName;
-    }
+function addCityToFavorites() {
+  emit("addCityToFavorites", { name: city.value, id: id.value });
+}
 
-    async function setWeather() {
-      isLoading.value = false;
-      const weatherData = await getWeather(city.value);
-      isLoading.value = true;
-      status.value = weatherData.status;
-      if (weatherData.status == 200) {
-        id.value = weatherData.id;
-        country.value = weatherData.country;
-        temp.value = weatherData.temp;
-        wind.value = weatherData.wind;
-        description.value = weatherData.description;
-        weatherIcon.value = weatherData.icon;
-        humidity.value = weatherData.humidity;
-        feels_like.value = weatherData.feels_like;
-      } else {
-        statusText.value = weatherData.statusText;
-      }
-    }
+function changeCity(cityName) {
+  city.value = cityName;
+}
 
-    async function setTimer(interval) {
-      clearInterval(timerId);
-      if (interval) {
-        timerId = await setInterval(setWeather, interval * 1000 * 60);
-      }
-    }
+async function setWeather() {
+  isLoading.value = false;
+  const weatherData = await getWeather(city.value);
+  isLoading.value = true;
+  status.value = weatherData.status;
+  if (weatherData.status == 200) {
+    id.value = weatherData.id;
+    country.value = weatherData.country;
+    temp.value = weatherData.temp;
+    wind.value = weatherData.wind;
+    description.value = weatherData.description;
+    weatherIcon.value = weatherData.icon;
+    humidity.value = weatherData.humidity;
+    feels_like.value = weatherData.feels_like;
+  } else {
+    statusText.value = weatherData.statusText;
+  }
+}
 
-    watch(city, () => setWeather());
+async function setTimer(interval) {
+  clearInterval(timerId);
+  if (interval) {
+    timerId = await setInterval(setWeather, interval * 1000 * 60);
+  }
+}
 
-    watch(
-      () => props.timer,
-      (value) => setTimer(value),
-    );
+watch(city, () => setWeather());
 
-    onMounted(setWeather);
+watch(
+  () => props.timer,
+  (value) => setTimer(value),
+);
 
-    return {
-      city,
-      country,
-      temp,
-      feels_like,
-      wind,
-      description,
-      weatherIcon,
-      humidity,
-      status,
-      statusText,
-      isLoading,
-      addCityToFavorites,
-      changeCity,
-      setWeather,
-    };
-  },
-};
+onMounted(setWeather);
 </script>
 
 <template>
